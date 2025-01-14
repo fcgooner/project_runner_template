@@ -1,61 +1,62 @@
-# ANTIDETECT BROWSER SETTINGS
-ANTIC_PORT = "50325"            # API -> API Settings -> Connection (http://local.adspower.net:PORT)
+# SETTINGS
+ADS_PORT = 50325                        # ADSPOWER -> API -> API Settings -> Connection (http://local.adspower.net:PORT)
+FRESH_RUN = True
+LOG_TO_FILE = False
+LOG_LEVEL_CONSOLE = 'INFO'
+LOG_LEVEL_FILE = 'DEBUG'
 
-# COMMON SETTINGS
-CONTINUE_RUN = False            # if True - don't reset task results from previous runs.
-                                # Useful if previous run failed for some reason
-                                # or if you want rerun only failed tasks
+CONCURRENT_PROFILES = 10                # HOW MANY PROFILES RUN AT ONCE
+                                        # OPTIMAL NUMBER FOR BROWSER TASKS: 10-20 (WITH 32GB OF RAM)
+                                        # OPTIMAL NUMBER FOR BROWSERLESS TASKS: ANY REASONABLE NUMBER SHOULD BE FINE
 
-LOG_LEVEL = "DEBUG"             # Logging level
+MAX_CYCLES = 3                          # 1 - RUN ONCE AND EXIT | >2 - RUN ONCE, RETRY ANY FAILED TASKS
 
-PROFILE_DATABASE_PATH = 'data/profile_database.csv'     # Path to CSV-table with profiles
-PROFILES_TO_RUN = 5                                     # Number of profiles to run simultaniously
-MAX_TASK_ATTEMPTS = 1                                   # Number of script runs (1 run = all profiles)
-MAX_WALLET_RETRIES = 5  # Number of attemps when looking for wallet extension window during interaction (connecct, sign etc)
-
-WALLET_NAMES = [        # List of wallets to unlock before executing tasks
-    'RABBY',            # Note: in this version of template only Rabby Wallet unlocking is implemented
+WALLETS_TO_UNLOCK = [                   # LIST OF WALLETS TO UNLOCK BEFORE EXECUTING BROWSER TASKS
+    'RABBY',                            # CURRENTLY IMPLEMENTED UNLOCK, CONNECT, SIGN/CONFIRM, APPROVE/ADD FOR
+    'PHANTOM',                          # OKX, PHANTOM AND RABBY WALLETS
+    # 'OKX'
 ]
 
+# ----------------------------------------
+# ------    COMMON CONFIGURATION    ------
+# ----------------------------------------
 
-# TESTNET SETTINGS
+PROJECTS = [            # LIST OF PROJECTS TO EXECUTE. COMMENT OUT ANY PROJECT YOU DON'T WANT TO EXECUTE
+    "LIFECHANGER",
+    "REKT",
+    # "THIRD"
+]
 
-TESTNET_TASKS_DATAFILES = {             # Path to testnet tasks CSV-table
-    "TESTNET1": "testnets/first_testnet/testnet_data/testnet1_tasks_data.csv",
-    "TESTNET2": "testnets/second_testnet/testnet_data/testnet2_tasks_data.csv",
-}
-
-CRITICAL_TASKS = ["TESTNET1 TASK1"]     # List of tasks, without the successful completion of which there is no point
-                                        # in performing other tasks
-                                        # For example, login to testnet website. No point trying to perworm, let's say, swap,
-                                        # when you weren't able to log in.
-
-TESTNET_TASKS = {
-
-    # TESTNET 1
-    "TESTNET1": {
-        'CORE': [               # Tasks, that are executed first, execution order not shuffled
-            "TESTNET1 TASK1",
-        ],
-        'OPTIONAL': [           # Tasks, that are executed after CORE tasks, execution order is shuffled
-            "TESTNET1 TASK2",
-            "TESTNET1 TASK3",
-        ],
-        'GROUP': [              # Tasks, that inserted at random place inside OPTIONAL tasks list, order shuffled
-            "TESTNET1 TASK4",   # For example: [task4, task5], task2, task3
-            "TESTNET1 TASK5"    # or: task3, [task4, task5], task2
-        ]
-    },
-
-    # TESTNET 2
-    "TESTNET2": {
+# TASKS BY PROJECTS. COMMENT OUT ANY TASKS YOU DON'T WANT TO EXECUTE
+# CORE TASKS - EXECUTED FIRST, ORDER NOT SHUFFLED
+# OPTIONAL TASKS - EXECUTED AFTER CORE TASKS, ORDER IS SHUFFLED
+# GROUP TASKS - OPTIONAL TASKS THAT NEED TO BE EXECUTED IN EXACT ORDER. INSERTED INSIDE OPTIONAL TASKS AT A RANDOM INDEX
+PROJECT_TASKS = {
+    "LIFECHANGER": {
         'CORE': [
-                "TESTNET2 TASK1",
-                "TESTNET2 TASK2"
+            # "LIFECHANGER LOGIN",
         ],
         'OPTIONAL': [
-                "TESTNET2 TASK3"
+            # "LIFECHANGER VOTE",
+        ],
+        'GROUP': [
+            # "LIFECHANGER FAUCET",
+            "LIFECHANGER SWAP",
+        ]
+    },
+    "REKT": {
+        'CORE': [
+                "REKT LOGIN",
+        ],
+        'OPTIONAL': [
+            "REKT CHECKIN",
+            # "REKT STAKE"
         ],
         'GROUP': []
     }
 }
+# BLOCKER TASKS. IF A PROJECT BLOCKER TASK FAILS, OTHER PROJECT TASKS WON'T BE EXECUTED
+CRITICAL_TASKS = ["LIFECHANGER LOGIN", "REKT LOGIN"]
+
+# TASKS THAT DON'T NEED REQUIRE BROWSER (API TASKS ETC.)
+BROWSERLESS_TASKS = ["LIFECHANGER SWAP", "REKT CHECKIN", "REKT LOGIN"]

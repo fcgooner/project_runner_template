@@ -1,0 +1,4 @@
+PROFILE_NUMBER,PROFILE_ID,WALLET_PASS,EVM_PK,EVM_ADDRESS,SOL_ADDRESS,EMAIL_ADDRESS,EMAIL_PASS,PROXY
+1,ddg45dg,wallet_p@ass,0xEvm_private_key,0xEvm_address,solana_address,email@example.com,email_p@ass,http://login:pass@ip:port
+2,cdg46df,wallet_p@ass,0xEvm_private_key,0xEvm_address,solana_address,email@example.com,email_p@ass,http://login:pass@ip:port
+3,cdf55fs,wallet_p@ass,0xEvm_private_key,0xEvm_address,solana_address,email@example.com,email_p@ass,http://login:pass@ip:port

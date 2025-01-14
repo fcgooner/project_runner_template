@@ -1,2 +1,9 @@
-loguru==0.7.2
-playwright==1.46.0
+fake-useragent>=2.0.3
+imap-tools>=1.7.2
+loguru>=0.7.2
+openai==1.47.1
+playwright>=1.47.0
+web3==6.20.3
+requests~=2.32.3
+aiohttp~=3.11.11
+hexbytes~=0.3.1
